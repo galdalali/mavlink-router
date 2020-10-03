@@ -325,8 +325,8 @@ bool Endpoint::accept_msg(int target_sysid, int target_compid, uint8_t src_sysid
     if (has_sys_comp_id(src_sysid, src_compid))
         return false;
 
-    if (msg_id != UINT32_MAX && 
-        _message_filter.size() > 0 && 
+    if (msg_id != UINT32_MAX &&
+        _message_filter.size() > 0 &&
         std::find(_message_filter.begin(), _message_filter.end(), msg_id) == _message_filter.end()) {
 
         // if filter is defined and message is not in the set then discard it
@@ -408,10 +408,10 @@ uint8_t Endpoint::get_trimmed_zeros(const mavlink_msg_entry_t *msg_entry, const 
         return 0;
 
     /* Should never happen but if happens it will cause stack overflow */
-    if (msg->payload_len > msg_entry->msg_len)
+    if (msg->payload_len > msg_entry->max_msg_len)
         return 0;
 
-    return msg_entry->msg_len - msg->payload_len;
+    return msg_entry->max_msg_len - msg->payload_len;
 }
 
 void Endpoint::log_aggregate(unsigned int interval_sec)
